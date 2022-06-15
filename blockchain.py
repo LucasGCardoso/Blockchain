@@ -39,8 +39,9 @@ class Blockchain:
         encoded_block = json.dumps(block, sort_keys=True).encode()
         return hashlib.sha256(encoded_block).hexdigest()
     
-    def is_chain_valid(self, chain):
+    def is_chain_valid(self):
         """Checks if the chain is valid. """
+        chain = self.chain
         previous_block = chain[0]
         block_index = 1
 
@@ -88,4 +89,19 @@ def mine_block():
 
     # Returns the response with some info and the HTTP Code 200.
     return jsonify(response), 200
+
+@app.route('/get_chain', methods = ['GET'])
+def get_chain():
+    response = {'chain': blockchain.chain,
+                'length': len(blockchain.chain)}
+    
+    return jsonify(response), 200
+
+@app.route('/is_valid', methods = ['GET'])
+def is_valid():
+    if(blockchain.is_chain_valid()):
+        return jsonify({'Message': 'The chain is Valid'}), 200
+    return jsonify({'Message': 'The chain is Invalid'}), 200
+
+app.run(host='0.0.0.0', port=5000)
 
