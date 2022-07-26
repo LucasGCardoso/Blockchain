@@ -1,3 +1,4 @@
+"""The first version of the blockchain."""
 import datetime
 import hashlib
 import json
@@ -38,7 +39,7 @@ class Blockchain:
         """Encodes the block to a sha256 hash."""
         encoded_block = json.dumps(block, sort_keys=True).encode()
         return hashlib.sha256(encoded_block).hexdigest()
-    
+
     def is_chain_valid(self):
         """Checks if the chain is valid. """
         chain = self.chain
@@ -51,7 +52,7 @@ class Blockchain:
             # Verify the previous hashes
             if block['previous_hash'] != self.hash(previous_block):
                 return False
-            
+
             # Verify if the block hash is valid, as well as the proof of work.
             previous_proof = previous_block['proof']
             proof = block['proof']
@@ -59,7 +60,7 @@ class Blockchain:
                 str(proof**2 - previous_proof**2).encode()).hexdigest()
             if hash_operation[:4] != '0000':
                 return False
-            
+
             previous_block = block
             block_index += 1
 
@@ -70,7 +71,8 @@ app = Flask(__name__)
 
 blockchain = Blockchain()
 
-@app.route('/mine_block', methods = ['GET'])
+
+@app.route('/mine_block', methods=['GET'])
 def mine_block():
     # Gather the previous block info.
     previous_block = blockchain.get_previous_block()
@@ -90,18 +92,20 @@ def mine_block():
     # Returns the response with some info and the HTTP Code 200.
     return jsonify(response), 200
 
-@app.route('/get_chain', methods = ['GET'])
+
+@app.route('/get_chain', methods=['GET'])
 def get_chain():
     response = {'chain': blockchain.chain,
                 'length': len(blockchain.chain)}
-    
+
     return jsonify(response), 200
 
-@app.route('/is_valid', methods = ['GET'])
+
+@app.route('/is_valid', methods=['GET'])
 def is_valid():
     if(blockchain.is_chain_valid()):
         return jsonify({'Message': 'The chain is Valid'}), 200
     return jsonify({'Message': 'The chain is Invalid'}), 200
 
-app.run(host='0.0.0.0', port=5000)
 
+app.run(host='0.0.0.0', port=5000)
