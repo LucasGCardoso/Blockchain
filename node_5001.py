@@ -198,4 +198,4 @@ def replace_chain():
     return jsonify({'message': 'Bigger chain not found. Chain was not replaced.', 'chain': blockchain.chain}), 200
 
 
-app.run(host='0.0.0.0', port=5000)
+app.run(host='0.0.0.0', port=5001)

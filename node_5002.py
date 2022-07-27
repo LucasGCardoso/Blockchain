@@ -136,7 +136,7 @@ def mine_block():
     previous_hash = blockchain.hash(previous_block)
     # Call the method to mine (search for the correct nounce).
     proof = blockchain.proof_of_work(previous_proof)
-    blockchain.add_transaction(sender=node_address, receiver='Lucas', amount=1)
+    blockchain.add_transaction(sender=node_address, receiver='Pedro', amount=1)
     # Creates a new block in the blockchain after finding the nounce.
     block = blockchain.create_block(proof, previous_hash)
 
@@ -198,4 +198,4 @@ def replace_chain():
     return jsonify({'message': 'Bigger chain not found. Chain was not replaced.', 'chain': blockchain.chain}), 200
 
 
-app.run(host='0.0.0.0', port=5000)
+app.run(host='0.0.0.0', port=5002)
