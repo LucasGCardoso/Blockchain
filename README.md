@@ -1,4 +1,4 @@
-# Blockchain
+# ₿lockchain
 This repo is a study about blockchain, following a Blockchain Engineer course on Udemy.
 
 ## How to Run:
